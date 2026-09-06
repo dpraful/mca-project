@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Edit Region</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    background:#eef3f8;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+.card-header{
+    background:#0B3D91;
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.form-control,
+.form-select{
+    height:45px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-7">
+
+<div class="card shadow">
+
+<div class="card-header">
+
+<i class="fa-solid fa-pen"></i>
+
+Edit Region
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label>Region Name</label>
+
+<input
+type="text"
+name="region_name"
+class="form-control"
+value="{{ region.region_name }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Region Type</label>
+
+<select
+name="region_type"
+class="form-select"
+required>
+
+<option value="Urban" {% if region.region_type == "Urban" %}selected{% endif %}>Urban</option>
+
+<option value="Rural" {% if region.region_type == "Rural" %}selected{% endif %}>Rural</option>
+
+<option value="Tribal" {% if region.region_type == "Tribal" %}selected{% endif %}>Tribal</option>
+
+</select>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<label>Latitude</label>
+
+<input
+type="text"
+name="latitude"
+class="form-control"
+value="{{ region.latitude }}"
+required>
+
+</div>
+
+<div class="col-md-6">
+
+<label>Longitude</label>
+
+<input
+type="text"
+name="longitude"
+class="form-control"
+value="{{ region.longitude }}"
+required>
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+
+<button class="btn btn-success">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+Update
+
+</button>
+
+<a href="{% url 'region_list' %}" class="btn btn-secondary">
+
+Back
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

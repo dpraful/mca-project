@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Health Alert</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body style="background:#eef3f8;">
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>Add Health Alert</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Title</label>
+
+<input type="text" class="form-control mb-3" name="title" required>
+
+<label>Alert Type</label>
+
+<select class="form-select mb-3" name="alert_type">
+
+<option>Disease</option>
+
+<option>Weather</option>
+
+<option>Emergency</option>
+
+<option>General</option>
+
+</select>
+
+<label>District</label>
+
+<select class="form-select mb-3" name="district" required>
+
+<option value="">-- Select District --</option>
+
+{% for region in regions %}
+
+<option value="{{ region.id }}">
+    {{ region.region_name  }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<label>Description</label>
+
+<textarea class="form-control mb-3" name="description"></textarea>
+
+<button class="btn btn-success">Save</button>
+
+<a href="{% url 'alert_list' %}" class="btn btn-secondary">Back</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

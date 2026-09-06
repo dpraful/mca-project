@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Vaccination Campaign</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{background:#eef3f8;}
+        .card{border:none;border-radius:15px;}
+        .card-header{background:#0B3D91;color:white;font-size:24px;font-weight:bold;}
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+<div class="row justify-content-center">
+<div class="col-lg-9">
+
+<div class="card shadow">
+
+<div class="card-header">
+Create Vaccination / Health Camp
+</div>
+
+<div class="card-body">
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST" onsubmit="return validateForm()">
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Camp Name</label>
+<input type="text" id="camp_name" name="camp_name" class="form-control" required>
+<span class="text-danger small" id="campNameError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Disease</label>
+<select id="disease" name="disease" class="form-select" required>
+<option value="">Select Disease</option>
+{% for d in diseases %}
+<option value="{{ d.id }}">{{ d.disease_name }}</option>
+{% endfor %}
+</select>
+<span class="text-danger small" id="diseaseError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Region</label>
+<select id="region" name="region" class="form-select" required>
+<option value="">Select Region</option>
+{% for r in regions %}
+<option value="{{ r.id }}">{{ r.region_name }}</option>
+{% endfor %}
+</select>
+<span class="text-danger small" id="regionError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Hospital Support</label>
+<select id="hospital" name="hospital" class="form-select" required>
+<option value="">Select Hospital</option>
+{% for h in hospitals %}
+<option value="{{ h.id }}">{{ h.hospital_name }}</option>
+{% endfor %}
+</select>
+<span class="text-danger small" id="hospitalError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Field Worker</label>
+<select id="field_worker" name="field_worker" class="form-select" required>
+<option value="">Select Worker</option>
+{% for w in workers %}
+<option value="{{ w.id }}">{{ w.full_name }}</option>
+{% endfor %}
+</select>
+<span class="text-danger small" id="workerError"></span>
+</div>
+
+<div class="col-md-3 mb-3">
+<label>Camp Date</label>
+<input type="date" id="camp_date" name="camp_date" class="form-control" required>
+<span class="text-danger small" id="campDateError"></span>
+</div>
+
+<div class="col-md-3 mb-3">
+<label>Camp Time</label>
+<input type="time" id="camp_time" name="camp_time" class="form-control" required>
+<span class="text-danger small" id="campTimeError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Venue</label>
+<input type="text" id="venue" name="venue" class="form-control" required>
+<span class="text-danger small" id="venueError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Target Population</label>
+<input type="number" id="target_population" name="target_population" class="form-control" min="1" required>
+<span class="text-danger small" id="targetError"></span>
+</div>
+
+<div class="col-md-12 mb-3">
+<label>Description</label>
+<textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+<span class="text-danger small" id="descError"></span>
+</div>
+
+<div class="text-center">
+<button class="btn btn-success">Create Campaign</button>
+<a href="{% url 'campaign_list' %}" class="btn btn-secondary">Back</a>
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+
+// Prevent past dates for Camp Date
+(function setMinDate(){
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("camp_date").min = today;
+})();
+
+function validateForm(){
+
+    let valid = true;
+
+    // Clear all errors
+    document.querySelectorAll(".text-danger").forEach(function(e){ e.innerHTML = ""; });
+
+
+    // Camp Name — min 3 chars
+    let campName = document.getElementById("camp_name").value.trim();
+    if(campName.length < 3){
+        document.getElementById("campNameError").innerHTML = "Camp name must be at least 3 characters";
+        valid = false;
+    }
+
+
+    // Disease — must select
+    if(document.getElementById("disease").value === ""){
+        document.getElementById("diseaseError").innerHTML = "Please select a disease";
+        valid = false;
+    }
+
+
+    // Region — must select
+    if(document.getElementById("region").value === ""){
+        document.getElementById("regionError").innerHTML = "Please select a region";
+        valid = false;
+    }
+
+
+    // Hospital — must select
+    if(document.getElementById("hospital").value === ""){
+        document.getElementById("hospitalError").innerHTML = "Please select a hospital";
+        valid = false;
+    }
+
+
+    // Field Worker — must select
+    if(document.getElementById("field_worker").value === ""){
+        document.getElementById("workerError").innerHTML = "Please select a field worker";
+        valid = false;
+    }
+
+
+    // Camp Date — required, must not be past
+    let campDate = document.getElementById("camp_date").value;
+    if(!campDate){
+        document.getElementById("campDateError").innerHTML = "Camp date is required";
+        valid = false;
+    } else {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selected = new Date(campDate);
+        if(selected < today){
+            document.getElementById("campDateError").innerHTML = "Camp date cannot be a past date";
+            valid = false;
+        }
+    }
+
+
+    // Camp Time — required
+    if(document.getElementById("camp_time").value === ""){
+        document.getElementById("campTimeError").innerHTML = "Camp time is required";
+        valid = false;
+    }
+
+
+    // Venue — min 3 chars
+    let venue = document.getElementById("venue").value.trim();
+    if(venue.length < 3){
+        document.getElementById("venueError").innerHTML = "Enter a valid venue (min 3 characters)";
+        valid = false;
+    }
+
+
+    // Target Population — at least 1
+    let target = parseInt(document.getElementById("target_population").value);
+    if(isNaN(target) || target < 1){
+        document.getElementById("targetError").innerHTML = "Target population must be at least 1";
+        valid = false;
+    }
+
+
+    // Description — min 10 chars
+    let desc = document.getElementById("description").value.trim();
+    if(desc.length < 10){
+        document.getElementById("descError").innerHTML = "Description must be at least 10 characters";
+        valid = false;
+    }
+
+
+    return valid;
+
+}
+
+</script>
+
+</body>
+</html>

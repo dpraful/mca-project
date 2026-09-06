@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Alert</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body { background: #eef3f8; }
+        .card { border: none; border-radius: 15px; }
+        .card-header { background: #0B3D91; color: white; font-size: 24px; font-weight: bold; }
+        .form-control, .form-select { height: 45px; }
+        textarea.form-control { height: 120px !important; }
+        label { font-weight: 600; }
+        .btn { min-width: 120px; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+<div class="row justify-content-center">
+<div class="col-lg-7">
+
+<div class="card shadow">
+
+<div class="card-header">
+    <i class="fa-solid fa-pen-to-square"></i> Edit Health Alert
+</div>
+
+<div class="card-body">
+
+<form method="POST" onsubmit="return validateForm()">
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-12 mb-3">
+    <label>Title</label>
+    <input type="text" id="title" name="title" class="form-control"
+           value="{{ alert.title }}" required>
+    <span class="text-danger small" id="titleError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>Alert Type</label>
+    <select id="alert_type" name="alert_type" class="form-select" required>
+        <option value="">Select Type</option>
+        <option value="Disease"   {% if alert.alert_type == 'Disease'   %}selected{% endif %}>Disease</option>
+        <option value="Weather"   {% if alert.alert_type == 'Weather'   %}selected{% endif %}>Weather</option>
+        <option value="Emergency" {% if alert.alert_type == 'Emergency' %}selected{% endif %}>Emergency</option>
+        <option value="General"   {% if alert.alert_type == 'General'   %}selected{% endif %}>General</option>
+    </select>
+    <span class="text-danger small" id="typeError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>District / Region</label>
+    <select id="district" name="district" class="form-select" required>
+        <option value="">Select Region</option>
+        {% for region in regions %}
+        <option value="{{ region.id }}"
+            {% if region.id == alert.district_id %}selected{% endif %}>
+            {{ region.region_name }}
+        </option>
+        {% endfor %}
+    </select>
+    <span class="text-danger small" id="districtError"></span>
+</div>
+
+<div class="col-md-6 mb-3">
+    <label>Status</label>
+    <select id="status" name="status" class="form-select" required>
+        <option value="Active"   {% if alert.status == 'Active'   %}selected{% endif %}>Active</option>
+        <option value="Inactive" {% if alert.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+</div>
+
+<div class="col-md-12 mb-3">
+    <label>Description</label>
+    <textarea id="description" name="description" class="form-control" required>{{ alert.description }}</textarea>
+    <span class="text-danger small" id="descError"></span>
+</div>
+
+<div class="text-center mt-3">
+    <button type="submit" class="btn btn-success">
+        <i class="fa-solid fa-floppy-disk"></i> Update
+    </button>
+    <a href="{% url 'alert_list' %}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+function validateForm(){
+
+    let valid = true;
+
+    document.querySelectorAll(".text-danger").forEach(function(e){ e.innerHTML = ""; });
+
+    // Title — min 3 chars
+    let title = document.getElementById("title").value.trim();
+    if(title.length < 3){
+        document.getElementById("titleError").innerHTML = "Title must be at least 3 characters";
+        valid = false;
+    }
+
+    // Alert Type — must select
+    if(document.getElementById("alert_type").value === ""){
+        document.getElementById("typeError").innerHTML = "Please select an alert type";
+        valid = false;
+    }
+
+    // District — must select
+    if(document.getElementById("district").value === ""){
+        document.getElementById("districtError").innerHTML = "Please select a region";
+        valid = false;
+    }
+
+    // Description — min 10 chars
+    let desc = document.getElementById("description").value.trim();
+    if(desc.length < 10){
+        document.getElementById("descError").innerHTML = "Description must be at least 10 characters";
+        valid = false;
+    }
+
+    return valid;
+
+}
+
+</script>
+
+</body>
+</html>

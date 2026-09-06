@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Edit Survey</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Edit Survey</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Region</label>
+
+                        <select name="region" class="form-control">
+
+                            {% for i in regions %}
+
+                            <option value="{{ i.id }}"
+                            {% if survey.region.id == i.id %}selected{% endif %}>
+                                {{ i.region_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Survey Date</label>
+
+                        <input type="date"
+                               name="survey_date"
+                               value="{{ survey.survey_date|date:'Y-m-d' }}"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Total Houses</label>
+                        <input type="number" name="total_houses" value="{{ survey.total_houses }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Houses Visited</label>
+                        <input type="number" name="houses_visited" value="{{ survey.houses_visited }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Total Population</label>
+                        <input type="number" name="total_population" value="{{ survey.total_population }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Male Population</label>
+                        <input type="number" name="male_population" value="{{ survey.male_population }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Female Population</label>
+                        <input type="number" name="female_population" value="{{ survey.female_population }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Children</label>
+                        <input type="number" name="children" value="{{ survey.children }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Senior Citizens</label>
+                        <input type="number" name="senior_citizens" value="{{ survey.senior_citizens }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Pregnant Women</label>
+                        <input type="number" name="pregnant_women" value="{{ survey.pregnant_women }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Disabled People</label>
+                        <input type="number" name="disabled_people" value="{{ survey.disabled_people }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Vaccinated People</label>
+                        <input type="number" name="vaccinated_people" value="{{ survey.vaccinated_people }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Unvaccinated People</label>
+                        <input type="number" name="unvaccinated_people" value="{{ survey.unvaccinated_people }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Chronic Patients</label>
+                        <input type="number" name="chronic_patients" value="{{ survey.chronic_patients }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Fever Cases</label>
+                        <input type="number" name="fever_cases" value="{{ survey.fever_cases }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Suspected Dengue</label>
+                        <input type="number" name="suspected_dengue" value="{{ survey.suspected_dengue }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Suspected Malaria</label>
+                        <input type="number" name="suspected_malaria" value="{{ survey.suspected_malaria }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Water Sources Checked</label>
+                        <input type="number" name="water_sources_checked" value="{{ survey.water_sources_checked }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Unsafe Water Sources</label>
+                        <input type="number" name="unsafe_water_sources" value="{{ survey.unsafe_water_sources }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Sanitation Issues</label>
+                        <input type="number" name="sanitation_issues" value="{{ survey.sanitation_issues }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Awareness Programs</label>
+                        <input type="number" name="awareness_programs" value="{{ survey.awareness_programs }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label>Remarks</label>
+
+                        <textarea name="remarks"
+                                  rows="4"
+                                  class="form-control">{{ survey.remarks }}</textarea>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Update Survey
+                </button>
+
+                <a href="{% url 'survey_list' %}" class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

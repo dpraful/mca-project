@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profile</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f7fb;
+}
+
+.container{
+    width:700px;
+    margin:30px auto;
+    background:#fff;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+}
+
+h2{
+    text-align:center;
+}
+
+.row{
+    display:flex;
+    gap:15px;
+}
+
+.form-group{
+    flex:1;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+textarea{
+    height:80px;
+}
+
+img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:15px auto;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#007bff;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.error{
+    color:red;
+    font-size:13px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Edit Profile</h2>
+
+<form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+
+{% csrf_token %}
+
+{% if client.image %}
+<img src="{{ client.image.url }}">
+{% endif %}
+
+
+<div class="row">
+
+<div class="form-group">
+<label>Name</label>
+<input type="text" id="name" name="name" value="{{ client.name }}">
+<span class="error" id="nameError"></span>
+</div>
+
+
+<div class="form-group">
+<label>Age</label>
+<input type="number" id="age" name="age" value="{{ client.age }}">
+<span class="error" id="ageError"></span>
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="form-group">
+<label>Gender</label>
+<select name="gender">
+<option value="m" {% if client.gender == 'm' %}selected{% endif %}>Male</option>
+<option value="f" {% if client.gender == 'f' %}selected{% endif %}>Female</option>
+<option value="o" {% if client.gender == 'o' %}selected{% endif %}>Other</option>
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Phone</label>
+<input type="text" id="phone" name="phone" value="{{ client.phone }}">
+<span class="error" id="phoneError"></span>
+</div>
+
+</div>
+
+
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="password" name="password" value="{{ client.password }}">
+<span class="error" id="passError"></span>
+</div>
+
+
+
+<div class="form-group">
+<label>Address</label>
+<textarea name="address">{{ client.address }}</textarea>
+</div>
+
+
+
+<div class="row">
+
+<div class="form-group">
+<label>State</label>
+<select name="state">
+<option value="">Select State</option>
+<option value="Kerala" {% if client.state == 'Kerala' %}selected{% endif %}>Kerala</option>
+<option value="Tamil Nadu" {% if client.state == 'Tamil Nadu' %}selected{% endif %}>Tamil Nadu</option>
+<option value="Karnataka" {% if client.state == 'Karnataka' %}selected{% endif %}>Karnataka</option>
+</select>
+</div>
+
+
+<div class="form-group">
+<label>District</label>
+<select name="district">
+<option value="">Select District</option>
+<option value="Thiruvananthapuram" {% if client.district == 'Thiruvananthapuram' %}selected{% endif %}>Thiruvananthapuram</option>
+<option value="Kollam" {% if client.district == 'Kollam' %}selected{% endif %}>Kollam</option>
+<option value="Pathanamthitta" {% if client.district == 'Pathanamthitta' %}selected{% endif %}>Pathanamthitta</option>
+<option value="Alappuzha" {% if client.district == 'Alappuzha' %}selected{% endif %}>Alappuzha</option>
+<option value="Kottayam" {% if client.district == 'Kottayam' %}selected{% endif %}>Kottayam</option>
+<option value="Idukki" {% if client.district == 'Idukki' %}selected{% endif %}>Idukki</option>
+<option value="Ernakulam" {% if client.district == 'Ernakulam' %}selected{% endif %}>Ernakulam</option>
+<option value="Thrissur" {% if client.district == 'Thrissur' %}selected{% endif %}>Thrissur</option>
+<option value="Palakkad" {% if client.district == 'Palakkad' %}selected{% endif %}>Palakkad</option>
+<option value="Malappuram" {% if client.district == 'Malappuram' %}selected{% endif %}>Malappuram</option>
+<option value="Kozhikode" {% if client.district == 'Kozhikode' %}selected{% endif %}>Kozhikode</option>
+<option value="Wayanad" {% if client.district == 'Wayanad' %}selected{% endif %}>Wayanad</option>
+<option value="Kannur" {% if client.district == 'Kannur' %}selected{% endif %}>Kannur</option>
+<option value="Kasaragod" {% if client.district == 'Kasaragod' %}selected{% endif %}>Kasaragod</option>
+</select>
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="form-group">
+<label>Pincode</label>
+<input type="text" id="pincode" name="pincode" value="{{ client.pincode }}">
+<span class="error" id="pinError"></span>
+</div>
+
+
+<div class="form-group">
+<label>Date of Birth</label>
+<input type="date" id="dob" name="dob" value="{{ client.dob|date:'Y-m-d' }}">
+<span class="error" id="dobError"></span>
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="form-group">
+<label>Blood Group</label>
+<select name="blood_group">
+<option value="">Select Blood Group</option>
+<option value="A+" {% if client.blood_group == 'A+' %}selected{% endif %}>A+</option>
+<option value="A-" {% if client.blood_group == 'A-' %}selected{% endif %}>A-</option>
+<option value="B+" {% if client.blood_group == 'B+' %}selected{% endif %}>B+</option>
+<option value="B-" {% if client.blood_group == 'B-' %}selected{% endif %}>B-</option>
+<option value="AB+" {% if client.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+<option value="AB-" {% if client.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+<option value="O+" {% if client.blood_group == 'O+' %}selected{% endif %}>O+</option>
+<option value="O-" {% if client.blood_group == 'O-' %}selected{% endif %}>O-</option>
+</select>
+</div>
+
+
+<div class="form-group">
+<label>Emergency Contact</label>
+<input type="text" id="emergency" name="emergency_contact" value="{{ client.emergency_contact }}">
+<span class="error" id="emergencyError"></span>
+</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="form-group">
+<label>Latitude</label>
+<input type="text" id="latitude" name="latitude" value="{{ client.latitude }}">
+<span class="error" id="latError"></span>
+</div>
+
+
+<div class="form-group">
+<label>Longitude</label>
+<input type="text" id="longitude" name="longitude" value="{{ client.longitude }}">
+<span class="error" id="longError"></span>
+</div>
+
+</div>
+
+
+
+<div class="form-group">
+<label>Profile Image</label>
+<input type="file" id="image" name="image" accept="image/*">
+<span class="error" id="imageError"></span>
+</div>
+
+
+
+<button type="submit">
+Update Profile
+</button>
+
+
+</form>
+
+</div>
+
+
+
+<script>
+
+// ---------------- Set DOB min/max on page load ----------------
+(function setDobLimits(){
+    const dob = document.getElementById("dob");
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+    dob.max = maxDate.toISOString().split("T")[0];
+    dob.min = minDate.toISOString().split("T")[0];
+})();
+
+function validateForm(){
+
+    let valid = true;
+
+    // Clear all errors first
+    document.querySelectorAll(".error").forEach(function(e){ e.innerHTML = ""; });
+
+
+    // Name — 3 to 50 chars, letters and spaces only
+    let name = document.getElementById("name").value.trim();
+    if(!/^[A-Za-z ]{3,50}$/.test(name)){
+        document.getElementById("nameError").innerHTML = "Enter a valid name (3–50 letters only)";
+        valid = false;
+    }
+
+
+    // Age — 18 to 100
+    let age = parseInt(document.getElementById("age").value);
+    if(isNaN(age) || age < 18 || age > 100){
+        document.getElementById("ageError").innerHTML = "Age must be between 18 and 100";
+        valid = false;
+    }
+
+
+    // Phone — Indian mobile: starts with 6-9, exactly 10 digits
+    let phone = document.getElementById("phone").value.trim();
+    if(!/^[6-9][0-9]{9}$/.test(phone)){
+        document.getElementById("phoneError").innerHTML = "Enter a valid 10-digit mobile number";
+        valid = false;
+    }
+
+
+    // Password — min 8 chars, uppercase, lowercase, number, special character
+    let password = document.getElementById("password").value;
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)){
+        document.getElementById("passError").innerHTML = "Min 8 characters with uppercase, lowercase, number & special character";
+        valid = false;
+    }
+
+
+    // Pincode — 6 digits, cannot start with 0
+    let pin = document.getElementById("pincode").value.trim();
+    if(!/^[1-9][0-9]{5}$/.test(pin)){
+        document.getElementById("pinError").innerHTML = "Enter a valid 6-digit pincode";
+        valid = false;
+    }
+
+
+    // DOB — must be within the calendar-restricted range (18–100 years)
+    let dob = document.getElementById("dob").value;
+    if(!dob){
+        document.getElementById("dobError").innerHTML = "Date of Birth is required";
+        valid = false;
+    } else {
+        const today = new Date();
+        const birthDate = new Date(dob);
+        const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+        if(birthDate > maxDate){
+            document.getElementById("dobError").innerHTML = "You must be at least 18 years old";
+            valid = false;
+        } else if(birthDate < minDate){
+            document.getElementById("dobError").innerHTML = "Age cannot exceed 100 years";
+            valid = false;
+        }
+    }
+
+
+    // Emergency Contact — Indian mobile: starts with 6-9, exactly 10 digits
+    let emergency = document.getElementById("emergency").value.trim();
+    if(!/^[6-9][0-9]{9}$/.test(emergency)){
+        document.getElementById("emergencyError").innerHTML = "Enter a valid 10-digit emergency contact";
+        valid = false;
+    }
+
+
+    // Latitude — decimal format, range -90 to 90
+    let lat = document.getElementById("latitude").value.trim();
+    let latPattern = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
+    if(lat === ""){
+        document.getElementById("latError").innerHTML = "Latitude is required (e.g. 10.52194)";
+        valid = false;
+    } else if(!latPattern.test(lat)){
+        document.getElementById("latError").innerHTML = "Invalid latitude. Use format like 10.52194 (between -90 and 90)";
+        valid = false;
+    }
+
+
+    // Longitude — decimal format, range -180 to 180
+    let lon = document.getElementById("longitude").value.trim();
+    let lonPattern = /^-?(180(\.0+)?|1[0-7]\d(\.\d+)?|[1-9]\d(\.\d+)?|0(\.\d+)?)$/;
+    if(lon === ""){
+        document.getElementById("longError").innerHTML = "Longitude is required (e.g. 76.21456)";
+        valid = false;
+    } else if(!lonPattern.test(lon)){
+        document.getElementById("longError").innerHTML = "Invalid longitude. Use format like 76.21456 (between -180 and 180)";
+        valid = false;
+    }
+
+
+    // Image — only if a new file is selected
+    let image = document.getElementById("image").files[0];
+    if(image){
+        let allowed = ["image/jpeg", "image/png", "image/jpg"];
+        if(!allowed.includes(image.type)){
+            document.getElementById("imageError").innerHTML = "Only JPG and PNG images allowed";
+            valid = false;
+        } else if(image.size > 2 * 1024 * 1024){
+            document.getElementById("imageError").innerHTML = "Image size must be below 2MB";
+            valid = false;
+        }
+    }
+
+
+    return valid;
+
+}
+
+</script>
+
+
+</body>
+</html>

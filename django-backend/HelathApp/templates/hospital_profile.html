@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Hospital Profile</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+
+background:#eef3f8;
+
+}
+
+.card{
+
+border:none;
+
+border-radius:15px;
+
+}
+
+th{
+
+width:250px;
+
+background:#f8f9fa;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white d-flex justify-content-between">
+
+<h3>Hospital Profile</h3>
+
+<a href="{% url 'hospital_home' %}" class="btn btn-light">
+
+Back
+
+</a>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Hospital Name</th>
+
+<td>{{ hospital.hospital_name }}</td>
+
+</tr>
+
+<tr>
+
+<th>Hospital Type</th>
+
+<td>{{ hospital.hospital_type }}</td>
+
+</tr>
+
+<tr>
+
+<th>Registration Number</th>
+
+<td>{{ hospital.registration_no }}</td>
+
+</tr>
+
+<tr>
+
+<th>License Number</th>
+
+<td>{{ hospital.license_no }}</td>
+
+</tr>
+
+<tr>
+
+<th>Email</th>
+
+<td>{{ hospital.email }}</td>
+
+</tr>
+
+<tr>
+
+<th>Phone</th>
+
+<td>{{ hospital.phone }}</td>
+
+</tr>
+
+<tr>
+
+<th>Address</th>
+
+<td>{{ hospital.address }}</td>
+
+</tr>
+
+<tr>
+
+<th>District</th>
+
+<td>{{ hospital.district }}</td>
+
+</tr>
+
+<tr>
+
+<th>Latitude</th>
+
+<td>{{ hospital.latitude }}</td>
+
+</tr>
+
+<tr>
+
+<th>Longitude</th>
+
+<td>{{ hospital.longitude }}</td>
+
+</tr>
+
+<tr>
+
+<th>Total Beds</th>
+
+<td>{{ hospital.total_beds }}</td>
+
+</tr>
+
+<tr>
+
+<th>ICU Beds</th>
+
+<td>{{ hospital.icu_beds }}</td>
+
+</tr>
+
+<tr>
+
+<th>Ambulance</th>
+
+<td>
+
+{% if hospital.ambulance %}
+
+<span class="badge bg-success">
+
+Available
+
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+
+Not Available
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Hospital Admin</th>
+
+<td>{{ hospital.admin_name }}</td>
+
+</tr>
+
+<tr>
+
+<th>Admin Phone</th>
+
+<td>{{ hospital.admin_phone }}</td>
+
+</tr>
+
+<tr>
+
+<th>Username</th>
+
+<td>{{ hospital.username }}</td>
+
+</tr>
+
+<tr>
+
+<th>Status</th>
+
+<td>
+
+{% if hospital.status == "Approved" %}
+
+<span class="badge bg-success">
+
+Approved
+
+</span>
+
+{% else %}
+
+<span class="badge bg-warning text-dark">
+
+Pending
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Registered On</th>
+
+<td>{{ hospital.created_at }}</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

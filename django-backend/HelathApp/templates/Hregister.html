@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hospital Registration</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f0f4f8;
+}
+
+.container{
+    width:700px;
+    margin:40px auto;
+    background:#fff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+}
+
+h2{
+    text-align:center;
+    color:#0066cc;
+    margin-bottom:20px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:15px;
+}
+
+textarea{
+    resize:none;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.checkbox input{
+    width:auto;
+}
+
+.btn{
+    width:100%;
+    background:#007bff;
+    color:#fff;
+    padding:12px;
+    border:none;
+    border-radius:5px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#0056b3;
+}
+
+.error{
+    color:red;
+    font-size:13px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="mb-3 mt-3">
+<a href="{% url 'index' %}" class="btn" style="background:#007bff;color:white;border-radius:5px;padding:8px 16px;text-decoration:none;font-size:14px;">
+&larr; Back
+</a>
+</div>
+
+<h2>Hospital Registration</h2>
+
+<form method="POST" onsubmit="return validateForm()">
+{% csrf_token %}
+
+<div class="form-group">
+<label>Hospital Name</label>
+<input type="text"
+       id="hospital_name"
+       name="hospital_name"
+       minlength="3"
+       maxlength="100"
+       required>
+<span class="error" id="hospitalNameError"></span>
+</div>
+
+<div class="form-group">
+<label>Hospital Type</label>
+<select id="hospital_type" name="hospital_type" required>
+<option value="">Select Hospital Type</option>
+<option value="Government">Government</option>
+<option value="Private">Private</option>
+<option value="Clinic">Clinic</option>
+<option value="Medical College">Medical College</option>
+<option value="Other">Other</option>
+</select>
+<span class="error" id="hospitalTypeError"></span>
+</div>
+
+<div class="form-group">
+<label>Registration Number</label>
+<input type="text"
+       id="registration_no"
+       name="registration_no"
+       placeholder="e.g. AB1234"
+       required>
+<span class="error" id="regNoError"></span>
+</div>
+
+<div class="form-group">
+<label>License Number</label>
+<input type="text"
+       id="license_no"
+       name="license_no"
+       placeholder="e.g. LK5678"
+       required>
+<span class="error" id="licNoError"></span>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email"
+       id="email"
+       name="email"
+       required>
+<span class="error" id="emailError"></span>
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="tel"
+       id="phone"
+       name="phone"
+       pattern="[0-9]{10}"
+       maxlength="10"
+       placeholder="10-digit mobile number"
+       required>
+<span class="error" id="phoneError"></span>
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<textarea id="address"
+          name="address"
+          rows="4"
+          required></textarea>
+<span class="error" id="addressError"></span>
+</div>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+District
+</label>
+
+<select
+id="district"
+class="form-select"
+name="district"
+required>
+
+<option value="">
+Select District
+</option>
+
+<option value="Thiruvananthapuram">Thiruvananthapuram</option>
+<option value="Kollam">Kollam</option>
+<option value="Pathanamthitta">Pathanamthitta</option>
+<option value="Alappuzha">Alappuzha</option>
+<option value="Kottayam">Kottayam</option>
+<option value="Idukki">Idukki</option>
+<option value="Ernakulam">Ernakulam</option>
+<option value="Thrissur">Thrissur</option>
+<option value="Palakkad">Palakkad</option>
+<option value="Malappuram">Malappuram</option>
+<option value="Kozhikode">Kozhikode</option>
+<option value="Wayanad">Wayanad</option>
+<option value="Kannur">Kannur</option>
+<option value="Kasaragod">Kasaragod</option>
+
+</select>
+<span class="error" id="districtError"></span>
+
+</div><br>
+
+<div class="form-group">
+<label>Latitude</label>
+<input type="text"
+       id="latitude"
+       name="latitude"
+       placeholder="e.g. 10.52194"
+       required>
+<span class="error" id="latError"></span>
+</div>
+
+<div class="form-group">
+<label>Longitude</label>
+<input type="text"
+       id="longitude"
+       name="longitude"
+       placeholder="e.g. 76.21456"
+       required>
+<span class="error" id="lonError"></span>
+</div>
+
+<div class="form-group">
+<label>Total Beds</label>
+<input type="number"
+       id="total_beds"
+       name="total_beds"
+       min="1"
+       required>
+<span class="error" id="totalBedsError"></span>
+</div>
+
+<div class="form-group">
+<label>ICU Beds</label>
+<input type="number"
+       id="icu_beds"
+       name="icu_beds"
+       min="0"
+       required>
+<span class="error" id="icuBedsError"></span>
+</div>
+
+<div class="form-group checkbox">
+<input type="checkbox" name="ambulance" value="True">
+<label>Ambulance Available</label>
+</div>
+
+<div class="form-group">
+<label>Administrator Name</label>
+<input type="text"
+       id="admin_name"
+       name="admin_name"
+       required>
+<span class="error" id="adminNameError"></span>
+</div>
+
+<div class="form-group">
+<label>Administrator Phone</label>
+<input type="tel"
+       id="admin_phone"
+       name="admin_phone"
+       pattern="[0-9]{10}"
+       maxlength="10"
+       placeholder="10-digit mobile number"
+       required>
+<span class="error" id="adminPhoneError"></span>
+</div>
+
+<div class="form-group">
+<label>Username</label>
+<input type="text"
+       id="username"
+       name="username"
+       minlength="4"
+       maxlength="20"
+       required>
+<span class="error" id="usernameError"></span>
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password"
+       id="password"
+       name="password"
+       minlength="6"
+       required>
+<span class="error" id="passError"></span>
+</div>
+
+<button type="submit" class="btn">Register Hospital</button>
+
+</form>
+
+</div>
+
+<script>
+
+function validateForm(){
+
+    let valid = true;
+
+    // Clear all errors
+    document.querySelectorAll(".error").forEach(function(e){ e.innerHTML = ""; });
+
+
+    // Hospital Name — 3 to 100 chars, letters/spaces/digits allowed
+    let hospitalName = document.getElementById("hospital_name").value.trim();
+    if(hospitalName.length < 3){
+        document.getElementById("hospitalNameError").innerHTML = "Hospital name must be at least 3 characters";
+        valid = false;
+    }
+
+
+    // Hospital Type — must select one
+    let hospitalType = document.getElementById("hospital_type").value;
+    if(hospitalType === ""){
+        document.getElementById("hospitalTypeError").innerHTML = "Please select a hospital type";
+        valid = false;
+    }
+
+
+    // Registration Number — 2 uppercase letters followed by 4 digits (e.g. AB1234)
+    let regNo = document.getElementById("registration_no").value.trim();
+    if(regNo === ""){
+        document.getElementById("regNoError").innerHTML = "Registration number is required";
+        valid = false;
+    } else if(!/^[A-Z]{2}[0-9]{4}$/.test(regNo)){
+        document.getElementById("regNoError").innerHTML = "Format must be 2 uppercase letters + 4 digits (e.g. AB1234)";
+        valid = false;
+    }
+
+
+    // License Number — 2 uppercase letters followed by 4 digits (e.g. LK5678)
+    let licNo = document.getElementById("license_no").value.trim();
+    if(licNo === ""){
+        document.getElementById("licNoError").innerHTML = "License number is required";
+        valid = false;
+    } else if(!/^[A-Z]{2}[0-9]{4}$/.test(licNo)){
+        document.getElementById("licNoError").innerHTML = "Format must be 2 uppercase letters + 4 digits (e.g. LK5678)";
+        valid = false;
+    }
+
+
+    // Email
+    let email = document.getElementById("email").value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        document.getElementById("emailError").innerHTML = "Enter a valid email address";
+        valid = false;
+    }
+
+
+    // Phone — Indian mobile: starts with 6-9, exactly 10 digits
+    let phone = document.getElementById("phone").value.trim();
+    if(!/^[6-9][0-9]{9}$/.test(phone)){
+        document.getElementById("phoneError").innerHTML = "Enter a valid 10-digit mobile number";
+        valid = false;
+    }
+
+
+    // Address — must not be empty
+    let address = document.getElementById("address").value.trim();
+    if(address.length < 5){
+        document.getElementById("addressError").innerHTML = "Please enter a valid address";
+        valid = false;
+    }
+
+
+    // District — must select one
+    let district = document.getElementById("district").value;
+    if(district === ""){
+        document.getElementById("districtError").innerHTML = "Please select a district";
+        valid = false;
+    }
+
+
+    // Latitude — decimal format, range -90 to 90
+    let lat = document.getElementById("latitude").value.trim();
+    let latPattern = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
+    if(lat === ""){
+        document.getElementById("latError").innerHTML = "Latitude is required (e.g. 10.52194)";
+        valid = false;
+    } else if(!latPattern.test(lat)){
+        document.getElementById("latError").innerHTML = "Invalid latitude. Use format like 10.52194 (between -90 and 90)";
+        valid = false;
+    }
+
+
+    // Longitude — decimal format, range -180 to 180
+    let lon = document.getElementById("longitude").value.trim();
+    let lonPattern = /^-?(180(\.0+)?|1[0-7]\d(\.\d+)?|[1-9]\d(\.\d+)?|0(\.\d+)?)$/;
+    if(lon === ""){
+        document.getElementById("lonError").innerHTML = "Longitude is required (e.g. 76.21456)";
+        valid = false;
+    } else if(!lonPattern.test(lon)){
+        document.getElementById("lonError").innerHTML = "Invalid longitude. Use format like 76.21456 (between -180 and 180)";
+        valid = false;
+    }
+
+
+    // Total Beds — must be at least 1
+    let totalBeds = parseInt(document.getElementById("total_beds").value);
+    if(isNaN(totalBeds) || totalBeds < 1){
+        document.getElementById("totalBedsError").innerHTML = "Total beds must be at least 1";
+        valid = false;
+    }
+
+
+    // ICU Beds — must be 0 or more, and not exceed total beds
+    let icuBeds = parseInt(document.getElementById("icu_beds").value);
+    if(isNaN(icuBeds) || icuBeds < 0){
+        document.getElementById("icuBedsError").innerHTML = "ICU beds cannot be negative";
+        valid = false;
+    } else if(!isNaN(totalBeds) && icuBeds > totalBeds){
+        document.getElementById("icuBedsError").innerHTML = "ICU beds cannot exceed total beds";
+        valid = false;
+    }
+
+
+    // Administrator Name — letters and spaces, 3-50 chars
+    let adminName = document.getElementById("admin_name").value.trim();
+    if(!/^[A-Za-z ]{3,50}$/.test(adminName)){
+        document.getElementById("adminNameError").innerHTML = "Enter a valid administrator name (letters only, 3–50 chars)";
+        valid = false;
+    }
+
+
+    // Administrator Phone — Indian mobile: starts with 6-9, exactly 10 digits
+    let adminPhone = document.getElementById("admin_phone").value.trim();
+    if(!/^[6-9][0-9]{9}$/.test(adminPhone)){
+        document.getElementById("adminPhoneError").innerHTML = "Enter a valid 10-digit administrator phone number";
+        valid = false;
+    }
+
+
+    // Username — 4 to 20 chars, alphanumeric and underscores only
+    let username = document.getElementById("username").value.trim();
+    if(!/^[A-Za-z0-9_]{4,20}$/.test(username)){
+        document.getElementById("usernameError").innerHTML = "Username must be 4–20 characters (letters, numbers, underscore only)";
+        valid = false;
+    }
+
+
+    // Password — min 8 chars, uppercase, lowercase, number, special character
+    let password = document.getElementById("password").value;
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)){
+        document.getElementById("passError").innerHTML = "Min 8 characters with uppercase, lowercase, number & special character";
+        valid = false;
+    }
+
+
+    return valid;
+
+}
+
+</script>
+
+</body>
+</html>

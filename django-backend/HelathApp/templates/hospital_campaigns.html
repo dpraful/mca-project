@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Assigned Vaccination Camps</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    background:#eef3f8;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+.card-header{
+    background:#0B3D91;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.table th{
+    background:#0B3D91;
+    color:white;
+    text-align:center;
+}
+
+.table td{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.badge{
+    font-size:14px;
+}
+
+.search-box{
+    width:300px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header d-flex justify-content-between">
+
+<span>
+
+<i class="fa-solid fa-hospital"></i>
+
+Assigned Vaccination Camps
+
+</span>
+
+<a href="{% url 'hospital_home' %}" class="btn btn-light">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back
+
+</a>
+
+</div>
+
+<div class="card-body">
+
+<input
+type="text"
+id="searchInput"
+class="form-control search-box mb-3"
+placeholder="Search Camp..."
+onkeyup="searchTable()">
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover" id="campTable">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Camp Name</th>
+
+<th>Disease</th>
+
+<th>Region</th>
+
+<th>Field Worker</th>
+
+<th>Date</th>
+
+<th>Time</th>
+
+<th>Venue</th>
+
+<th>Target</th>
+
+<th>Status</th>
+
+<th>Details</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for camp in campaigns %}
+
+<tr>
+
+<td>{{ camp.id }}</td>
+
+<td>{{ camp.camp_name }}</td>
+
+<td>{{ camp.disease.disease_name }}</td>
+
+<td>{{ camp.region.region_name }}</td>
+
+<td>{{ camp.field_worker.full_name }}</td>
+
+<td>{{ camp.camp_date }}</td>
+
+<td>{{ camp.camp_time }}</td>
+
+<td>{{ camp.venue }}</td>
+
+<td>{{ camp.target_population }}</td>
+
+<td>
+
+{% if camp.status == "Scheduled" %}
+
+<span class="badge bg-primary">
+Scheduled
+</span>
+
+{% elif camp.status == "Ongoing" %}
+
+<span class="badge bg-warning text-dark">
+Ongoing
+</span>
+
+{% elif camp.status == "Completed" %}
+
+<span class="badge bg-success">
+Completed
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+Cancelled
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+<button
+class="btn btn-info btn-sm"
+data-bs-toggle="modal"
+data-bs-target="#camp{{ camp.id }}">
+
+View
+
+</button>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="11">
+
+No Assigned Campaigns
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Modal -->
+
+{% for camp in campaigns %}
+
+<div class="modal fade" id="camp{{ camp.id }}">
+
+<div class="modal-dialog modal-lg">
+
+<div class="modal-content">
+
+<div class="modal-header bg-primary text-white">
+
+<h5>
+
+{{ camp.camp_name }}
+
+</h5>
+
+<button class="btn-close" data-bs-dismiss="modal"></button>
+
+</div>
+
+<div class="modal-body">
+
+<table class="table table-bordered">
+
+<tr>
+<th>Disease</th>
+<td>{{ camp.disease.disease_name }}</td>
+</tr>
+
+<tr>
+<th>Region</th>
+<td>{{ camp.region.region_name }}</td>
+</tr>
+
+<tr>
+<th>Hospital</th>
+<td>{{ camp.hospital.hospital_name }}</td>
+</tr>
+
+<tr>
+<th>Field Worker</th>
+<td>{{ camp.field_worker.full_name }}</td>
+</tr>
+
+<tr>
+<th>Date</th>
+<td>{{ camp.camp_date }}</td>
+</tr>
+
+<tr>
+<th>Time</th>
+<td>{{ camp.camp_time }}</td>
+</tr>
+
+<tr>
+<th>Venue</th>
+<td>{{ camp.venue }}</td>
+</tr>
+
+<tr>
+<th>Target Population</th>
+<td>{{ camp.target_population }}</td>
+</tr>
+
+<tr>
+<th>Duration</th>
+<td>{{ camp.expected_duration }}</td>
+</tr>
+
+<tr>
+<th>Description</th>
+<td>{{ camp.description }}</td>
+</tr>
+
+<tr>
+<th>Status</th>
+<td>{{ camp.status }}</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+function searchTable(){
+
+let input=document.getElementById("searchInput");
+
+let filter=input.value.toUpperCase();
+
+let table=document.getElementById("campTable");
+
+let tr=table.getElementsByTagName("tr");
+
+for(let i=1;i<tr.length;i++){
+
+let td=tr[i].getElementsByTagName("td")[1];
+
+if(td){
+
+let txt=td.textContent || td.innerText;
+
+if(txt.toUpperCase().indexOf(filter)>-1){
+
+tr[i].style.display="";
+
+}else{
+
+tr[i].style.display="none";
+
+}
+
+}
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

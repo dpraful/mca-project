@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    padding:40px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+}
+
+.profile-card{
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
+    padding:30px;
+}
+
+.profile-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.profile-header img{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #4facfe;
+}
+
+.profile-header .avatar{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    background:#4facfe;
+    color:#fff;
+    font-size:55px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+}
+
+.profile-header h2{
+    margin-top:15px;
+    color:#333;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.info div{
+    background:#f7f7f7;
+    padding:15px;
+    border-radius:8px;
+}
+
+.info strong{
+    display:block;
+    color:#4facfe;
+    margin-bottom:5px;
+}
+
+.buttons{
+    text-align:center;
+    margin-top:30px;
+}
+
+.btn{
+    display:inline-block;
+    padding:12px 25px;
+    margin:5px;
+    text-decoration:none;
+    color:white;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.home{
+    background:#007bff;
+}
+
+.edit{
+    background:#28a745;
+}
+
+.btn:hover{
+    opacity:0.9;
+}
+
+@media(max-width:600px){
+    .info{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="profile-card">
+
+<div class="profile-header">
+
+{% if client.image %}
+    <img src="{{ client.image.url }}" alt="Profile Image">
+{% else %}
+    <div class="avatar">
+        {{ client.name|first|upper }}
+    </div>
+{% endif %}
+
+<h2>{{ client.name }}</h2>
+
+</div>
+
+<div class="info">
+
+<div>
+<strong>Name</strong>
+{{ client.name }}
+</div>
+
+<div>
+<strong>Age</strong>
+{{ client.age }}
+</div>
+
+<div>
+<strong>Gender</strong>
+{{ client.get_gender_display }}
+</div>
+
+<div>
+<strong>Email</strong>
+{{ client.email }}
+</div>
+
+<div>
+<strong>Phone</strong>
+{{ client.phone }}
+</div>
+
+<div>
+<strong>Date of Birth</strong>
+{{ client.dob }}
+</div>
+
+<div>
+<strong>Blood Group</strong>
+{{ client.blood_group }}
+</div>
+
+<div>
+<strong>Emergency Contact</strong>
+{{ client.emergency_contact }}
+</div>
+
+<div>
+<strong>District</strong>
+{{ client.district }}
+</div>
+
+<div>
+<strong>State</strong>
+{{ client.state }}
+</div>
+
+<div>
+<strong>Pincode</strong>
+{{ client.pincode }}
+</div>
+
+<div>
+<strong>Latitude</strong>
+{{ client.latitude }}
+</div>
+
+<div>
+<strong>Longitude</strong>
+{{ client.longitude }}
+</div>
+
+<div style="grid-column:1/3;">
+<strong>Address</strong>
+{{ client.address }}
+</div>
+
+</div>
+
+<div class="buttons">
+    <a href="{% url 'home' %}" class="btn home">🏠 Home</a>
+
+    <a href="{% url 'editprofile' %}" class="btn edit">✏ Edit Profile</a>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<table class="table table-bordered">
+
+<tr>
+    <th>Day</th>
+    <th>Predicted Cases</th>
+</tr>
+
+{% for p in prediction %}
+
+<tr>
+
+<td>{{ forloop.counter }}</td>
+
+<td>{{ p|floatformat:2 }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>

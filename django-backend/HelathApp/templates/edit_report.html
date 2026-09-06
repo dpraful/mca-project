@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Disease Report</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    background:#eef3f8;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+}
+
+.card-header{
+    background:#0B3D91;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.form-control,
+.form-select{
+    height:45px;
+}
+
+textarea{
+    height:120px !important;
+}
+
+label{
+    font-weight:bold;
+}
+
+.btn{
+    min-width:120px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-9">
+
+<div class="card shadow">
+
+<div class="card-header">
+
+<i class="fa-solid fa-pen-to-square"></i>
+
+Edit Disease Report
+
+</div>
+
+<div class="card-body">
+
+<form method="POST" onsubmit="return validateForm();">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>Disease</label>
+
+<select name="disease" class="form-select" required>
+
+{% for d in diseases %}
+
+<option value="{{ d.id }}"
+{% if report.disease.id == d.id %}
+selected
+{% endif %}>
+
+{{ d.disease_name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Region</label>
+
+<select name="region" class="form-select" required>
+
+{% for r in regions %}
+
+<option value="{{ r.id }}"
+{% if report.region.id == r.id %}
+selected
+{% endif %}>
+
+{{ r.region_name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<label>Total Cases</label>
+
+<input
+type="number"
+ id="case_count"
+name="case_count"
+class="form-control"
+value="{{ report.case_count }}"
+required>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<label>Male Cases</label>
+
+<input
+type="number"
+name="male_cases"
+id="male_cases"
+class="form-control"
+value="{{ report.male_cases }}"
+required>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<label>Female Cases</label>
+
+<input
+type="number"
+name="female_cases"
+id="female_cases"                                                                                                                                                                                                                                                               
+class="form-control"
+value="{{ report.female_cases }}"
+required>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<label>Children Cases</label>
+
+<input
+type="number"
+name="children_cases"
+id="children_cases"
+class="form-control"
+value="{{ report.children_cases }}"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Report Date</label>
+
+<input type="date"
+       name="report_date"
+       id="report_date"
+       value="{{ report.report_date|date:'Y-m-d' }}"
+       max="{% now 'Y-m-d' %}"
+       required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Status</label>
+
+<input
+type="text"
+class="form-control"
+value="{{ report.status }}"
+readonly>
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label>Remarks</label>
+
+<textarea
+name="remarks"
+class="form-control">{{ report.remarks }}</textarea>
+
+</div>
+
+<div class="text-center mt-3">
+
+<button
+type="submit"
+class="btn btn-success">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+Update
+
+</button>
+
+<a
+href="{% url 'my_reports' %}"
+class="btn btn-secondary">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back
+
+</a>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+<script>
+function validateForm() {
+
+    let total = parseInt(document.getElementById("case_count").value) || 0;
+    let male = parseInt(document.getElementById("male_cases").value) || 0;
+    let female = parseInt(document.getElementById("female_cases").value) || 0;
+    let children = parseInt(document.getElementById("children_cases").value) || 0;
+
+    if (total !== (male + female + children)) {
+        alert("Total Cases must equal Male + Female + Children Cases.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+</html>
