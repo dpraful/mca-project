@@ -1,0 +1,19 @@
+# Core Django project
+Django==6.1.1
+
+# Environment and CORS
+dotenv==0.9.9
+python-dotenv==1.2.3
+django-cors-headers==4.9.0
+
+# Image/media support
+pillow==12.3.0
+
+# Data analysis and forecasting
+numpy==2.5.3
+pandas==3.0.6
+matplotlib==3.11.2
+statsmodels==0.15.0
+
+# API requests
+requests==2.34.2

@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+# Fallback allows local development to run on a new machine without a .env file.
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key-change-me-please")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -134,7 +135,7 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 import os
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 GROQ_MODEL2 = "meta-llama/llama-4-scout-17b-16e-instruct"
 
